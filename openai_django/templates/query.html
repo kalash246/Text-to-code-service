@@ -27,6 +27,8 @@
             });
                 // Get the prompt
                 var prompt = $('#prompt').val();
+                var lang = $('#Language').val();
+                var cleaningFn = $('#cleaningFn').val();
                 var dateTime = new Date();
                 var time = dateTime.toLocaleTimeString();
                 // Add the prompt to the response div
@@ -36,7 +38,11 @@
                 $.ajax({
                     url: '/',
                     type: 'POST',
-                    data: {prompt: prompt},
+                    data: {
+                        prompt: prompt,
+                        lang: lang,
+                        cleaningFn: cleaningFn
+                    },
                     dataType: 'json',
                     success: function(data) {
                         $('#response').append('<p>('+ time + ') <i class="bi bi-robot"></i>: ' + data.response + '</p>');
@@ -48,11 +54,23 @@
 </head>
 <body>
     <div class="container p-3">
-        <h3>ChatGPT Clone</h3>
-        <a href="https://github.com/victordonoso/openai" class="link-info">Project on Github</a>
+        <h3>Text To Code Service</h3>
+        <a href="https://github.com/kalash246/Text-to-code-service" class="link-info">Project on Github</a>
         <div class="mb-3">
             <form method="post">
                 {% csrf_token %}
+                <label for="Language" class="form-label"><strong>Language: </strong></label>
+                <select id="Language" name="Language" class="form-control">
+                    <option value="Javascript">Javascript</option>
+                    <option value="React">React</option>
+                    <option value="Angular">Angular</option>
+                    <option value="Vue">Vue</option>
+                </select>
+                <label for="cleaningFn" class="form-label"><strong>Cleaning Function Type: </strong></label>
+                <select id="cleaningFn" name="cleaningFn" class="form-control">
+                    <option value="columnHooks">columnHooks</option>
+                    <option value="onEntryInit">onEntryInit</option>
+                </select>
                 <label for="prompt" class="form-label"><strong>Prompt: </strong></label>
                 <textarea class="form-control" type="textarea" id="prompt" name="prompt" rows="3"></textarea>
                 <br>
